@@ -113,12 +113,19 @@ int main(int argc, char **argv) {
                 uint16_t addr = mem[pc + 1] << 8 | mem[pc + 2];
                 ds[dsc++] = mem[addr] << 8 | mem[addr + 1];
                 pc += 3;
-                break;
+                } break;
             case 16: /* indirect load byte */
                 ds[dsc - 1] = mem[ds[dsc - 1]];
                 ++pc;
                 break;
-            case 17: /* indirect load 
+            case 17: /* indirect load signed byte */
+                (int16_t *)ds[dsc - 1] = mem[ds[dsc - 1]];
+                ++pc;
+                break;
+            case 18: { /* indirect load */
+                uint16_t addr = ds[dsc - 1];
+                ds[dsc - 1] = mem[addr] << 8 | mem[addr + 1];
+                } break;
         }
     }
 }
