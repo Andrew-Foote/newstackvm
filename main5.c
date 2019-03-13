@@ -109,13 +109,15 @@ void run() {
         &&fabs_, /* 4B */
         &&fmul, /* 4C */
         &&fdiv, /* 4D */
-        &&flt, /* 4E */
-        &&fle, /* 4F */
-        &&fgt, /* 50 */
-        &&fge, /* 51 */
-        &&fint, /* 52 */
-        &&float_, /* 53 */
-        &&ufloat, /* 54 */
+        &&feq, /* 4E */
+        &&fne, /* 4F */
+        &&flt, /* 50 */
+        &&fle, /* 51 */
+        &&fgt, /* 52 */
+        &&fge, /* 53 */
+        &&fint, /* 54 */
+        &&float_, /* 55 */
+        &&ufloat, /* 57 */
     };
 
     #ifdef DEBUG
@@ -405,6 +407,14 @@ void run() {
         DISPATCH(++pc);
     fdiv:
         fds[dsc - 1] /= fds[--dsc];
+        DISPATCH(++pc);
+    feq:
+        fds[dsc - 2] = fds[dsc - 1] == fds[dsc - 2] ? -1 : 0;
+        --dsc;
+        DISPATCH(++pc);
+    fne:
+        fds[dsc - 2] = fds[dsc - 1] != fds[dsc - 2] ? -1 : 0;
+        --dsc;
         DISPATCH(++pc);
     flt:
         fds[dsc - 2] = fds[dsc - 2] < fds[dsc -1];
