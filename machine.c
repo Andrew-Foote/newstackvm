@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DEBUG
 
 #define BMEMSIZE 16777216ll
 #define WMEMSIZE BMEMSIZE / 2

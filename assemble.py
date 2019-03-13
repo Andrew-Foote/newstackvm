@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys
 
-INSTRUCTIONS = [
+OPCODES = {
     'halt': 0x00,
         'pass': 0x01,
         'litb': 0x02,
@@ -89,10 +89,36 @@ INSTRUCTIONS = [
         'fint': 0x54,
         'float_': 0x55,
         'ufloat': 0x57,
-]
+}
 
 def assemble(src):
-    for word in src.split():
+    for token in src.split():
+        try:
+            num = int(token)
+        except ValueError:
+            yield OPCODES[token]
+        else:
+            neg = num < 0
+            bytes = []
+            
+            for _ in range(8):
+                bytes.append(num & 255)
+                num >>= 8
+            
+            if num:
+                raise ValueError(f'integer {num} is too large')
+
+            opcode = math.log2(len(bytes)) + 2
+            opcode |= not neg * 8
+            yield opcode
+            
+
+            if num < 0:
+                if num >= -128:
+                    yield num + 256
+                elif num >= -32768
+                    yield num + 65536
+                elif num 
 
 if __name__ == '__main__':
     argc = len(sys.argv) 
