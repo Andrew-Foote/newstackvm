@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define DEBUG
+
 #define BMEMSIZE 16777216ll
 #define WMEMSIZE BMEMSIZE / 2
 #define DMEMSIZE WMEMSIZE / 2
@@ -116,15 +118,25 @@ void run() {
         &&ufloat, /* 54 */
     };
 
+    #ifdef DEBUG
     #define DISPATCH(PC) ({\
         int64_t pc_ = (PC);\
-        printf("pc %ld, inst %u, dsc %ld, rsc %ld ; ", pc_, ubmem[pc_], dsc, rsc);\
-        for (int i = 0; i < dsc; ++i) printf("%ld ", ds[i]);\
-        printf("; ");\
-        for (int i = 0; i < rsc; ++i) printf("%ld ", rs[i]);\
-        printf("\n");\
+        printf("PC %lX (%02X), DSC %ld (", pc_, ubmem[pc_], dsc);\
+        if (dsc) {\
+            printf("%ld", ds[0]);\
+            for (int i = 1; i < dsc; ++i) printf(" %ld", ds[i]);\
+        }\
+        printf("), RSC %ld (", rsc);\
+        if (rsc) {\
+            printf("%ld", rs[0]);\
+            for (int i = 1; i < rsc; ++i) printf(" %ld", rs[i]);\
+        }\
+        printf(")\n");\
         goto *dispatch[ubmem[pc_]];\
     })
+    #else
+    #define DISPATCH(PC) goto *dispatch[ubmem[PC]];
+    #endif
 
     DISPATCH(pc);
 
