@@ -1,0 +1,55 @@
+
+/*
+factorial:
+    dup             ; Duplicate the argument. The copy on the bottom will be the result,
+                    ; the copy on the top will be the loop counter.
+factorial-iter:
+    dup litb 2 >    ; Push a Boolean representing whether the loop counter is greater than two.
+    :factorial-return
+    djump           ; If it isn't, return.
+    dec             : Decrement the loop counter.
+    tuck            ; Save a copy of the loop counter underneath the result.
+    *               ; Multiply together the result and the top copy of the loop counter.
+    swap            ; The new result is now on top of the stack, so put it back underneath the loop counter.
+    :factorial-iter
+    djump           ; Loop back.
+
+factorial-return:
+    drop            ; Destroy the loop counter, leaving the result on top.
+    rjump           ; Return.
+
+
+    dup litb 2 > crjump
+    dup litb 1 - *
+    :factorial djump
+*/
+
+00: 02      ; litb
+01: 0A      ; 10
+02: 02      ; litb
+03: 06      ; :factorial
+04: 0D      ; dcall
+05: 00      ; halt
+06: 15      ; dup
+07: 15      ; dup
+08: 02      ; litb
+09: 02      ; 2
+0A: 44      ; >
+0B: 02      ; litb
+0C: 15      ; :factorial-return
+0D: 0B      ; cdjump
+0E: 30      ; dec
+0F: 19      ; tuck
+10: 34      ; mul
+11: 1A      ; swap
+12: 02      ; litb
+13: 07      ; :factorial-iter
+14: 09      ; djump
+15: 17      ; drop
+16: 0A      ; rjump
+
+01: 15
+02: 02
+03: 02
+04: 44
+05: 
