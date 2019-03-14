@@ -51,7 +51,7 @@ void run() {
         &&dget, /* 12 */
         &&dset, /* 13 */
         &&fall, /* 14 */
-        &&dup, /* 15 */
+        &&dup_, /* 15 */
         &&over, /* 16 */
         &&drop, /* 17 */
         &&nip, /* 18 */
@@ -116,7 +116,7 @@ void run() {
         &&fge, /* 53 */
         &&fint, /* 54 */
         &&float_, /* 55 */
-        &&ufloat, /* 57 */
+        &&ufloat, /* 56 */
     };
 
     #ifdef DEBUG
@@ -207,7 +207,7 @@ void run() {
     fall:
         dsc -= ds[dsc - 1] - 1;
         DISPATCH(++pc);
-    dup:
+    dup_:
         ds[dsc++] = ds[dsc - 1];
         DISPATCH(++pc);
     over:

@@ -24,6 +24,24 @@ factorial-return:
     :factorial djump
 */
 
+factorial:
+    dup
+    factorial-iter:
+        dup
+        2 >
+        :factorial-return cdjump
+        dec
+        tuck
+        mul
+        swap
+        :factorial-iter djump
+    factorial-return:
+        drop
+        rjump
+
+
+
+
 00: 02      ; litb
 01: 0A      ; 10
 02: 02      ; litb
